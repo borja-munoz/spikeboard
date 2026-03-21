@@ -1,0 +1,45 @@
+{
+  "app": {
+    "name": "Spikeboard"
+  },
+  "home": {
+    "startMatch": "Start Match",
+    "configure": "Configure"
+  },
+  "scoreboard": {
+    "team": "Team",
+    "set": "Set",
+    "match": "Match",
+    "serving": "Serving"
+  },
+  "config": {
+    "title": "Match Settings",
+    "matchFormat": "Match Format",
+    "bestOf1": "Best of 1",
+    "bestOf3": "Best of 3",
+    "bestOf5": "Best of 5",
+    "pointsPerSet": "Points per Set",
+    "minLead": "Minimum Lead",
+    "tiebreakPoints": "Tiebreak Points",
+    "tiebreakMinLead": "Tiebreak Minimum Lead",
+    "teamNames": "Team Names",
+    "teamA": "Team A",
+    "teamB": "Team B",
+    "sound": "Sound Effects",
+    "language": "Language",
+    "useDefaults": "Use Defaults",
+    "save": "Save"
+  },
+  "overlay": {
+    "setWon": "{{team}} wins the set!",
+    "matchWon": "{{team}} wins the match!",
+    "newMatch": "New Match",
+    "rematch": "Rematch"
+  },
+  "dialog": {
+    "resetTitle": "Reset Match",
+    "resetMessage": "Are you sure you want to reset the current match?",
+    "confirm": "Reset",
+    "cancel": "Cancel"
+  }
+}

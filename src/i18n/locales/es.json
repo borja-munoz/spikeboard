@@ -1,0 +1,45 @@
+{
+  "app": {
+    "name": "Spikeboard"
+  },
+  "home": {
+    "startMatch": "Iniciar Partido",
+    "configure": "Configurar"
+  },
+  "scoreboard": {
+    "team": "Equipo",
+    "set": "Set",
+    "match": "Partido",
+    "serving": "Saque"
+  },
+  "config": {
+    "title": "Configuración del Partido",
+    "matchFormat": "Formato del Partido",
+    "bestOf1": "Al mejor de 1",
+    "bestOf3": "Al mejor de 3",
+    "bestOf5": "Al mejor de 5",
+    "pointsPerSet": "Puntos por Set",
+    "minLead": "Ventaja Mínima",
+    "tiebreakPoints": "Puntos en el Tie-break",
+    "tiebreakMinLead": "Ventaja Mínima en Tie-break",
+    "teamNames": "Nombres de Equipos",
+    "teamA": "Equipo A",
+    "teamB": "Equipo B",
+    "sound": "Efectos de Sonido",
+    "language": "Idioma",
+    "useDefaults": "Usar Valores por Defecto",
+    "save": "Guardar"
+  },
+  "overlay": {
+    "setWon": "¡{{team}} gana el set!",
+    "matchWon": "¡{{team}} gana el partido!",
+    "newMatch": "Nuevo Partido",
+    "rematch": "Revancha"
+  },
+  "dialog": {
+    "resetTitle": "Reiniciar Partido",
+    "resetMessage": "¿Seguro que quieres reiniciar el partido actual?",
+    "confirm": "Reiniciar",
+    "cancel": "Cancelar"
+  }
+}
