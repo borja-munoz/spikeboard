@@ -5,6 +5,7 @@ import { VitePWA } from 'vite-plugin-pwa'
 
 // https://vite.dev/config/
 export default defineConfig({
+  base: '/spikeboard/',
   plugins: [
     react(),
     tailwindcss(),
@@ -19,8 +20,8 @@ export default defineConfig({
         background_color: '#0f172a',
         display: 'standalone',
         orientation: 'portrait',
-        scope: '/',
-        start_url: '/',
+        scope: '/spikeboard/',
+        start_url: '/spikeboard/',
         icons: [
           {
             src: 'icon-192.png',

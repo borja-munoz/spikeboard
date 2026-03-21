@@ -90,7 +90,26 @@ src/
 
 ---
 
-### Milestone 2 — Core Score Tracking UI
+### Milestone 2 — CI/CD: GitHub Actions → GitHub Pages
+**Goal:** Every push to `main` automatically builds and deploys the app to `https://borja-munoz.github.io/spikeboard`.
+
+- Set `base: '/spikeboard/'` in `vite.config.ts` so all asset paths are correct under the subdirectory
+- Create `.github/workflows/deploy.yml` with:
+  - Trigger: `push` to `main`
+  - Steps: checkout → setup Node (22) + pnpm → `pnpm install` → `pnpm build` → deploy `dist/` to GitHub Pages using `actions/deploy-pages`
+- Use the official `actions/configure-pages`, `actions/upload-pages-artifact`, and `actions/deploy-pages` actions (no third-party deploy action needed)
+- Set `permissions: pages: write, id-token: write` so the workflow can publish
+
+**GitHub account setup required (one-time):**
+1. Go to the repo **Settings → Pages**
+2. Under *Build and deployment*, set Source to **GitHub Actions**
+3. No token configuration needed — the built-in `GITHUB_TOKEN` is sufficient
+
+**Done when:** Pushing to `main` triggers the workflow and the live URL is accessible and installable as a PWA.
+
+---
+
+### Milestone 3 — Core Score Tracking UI
 **Goal:** Two-panel layout showing live score, with tap/button controls to increment/decrement.
 
 - Design the main scoreboard layout (two large score panels side by side, landscape-friendly)
@@ -105,7 +124,7 @@ src/
 
 ---
 
-### Milestone 3 — Gesture Controls
+### Milestone 4 — Gesture Controls
 **Goal:** Swipe up anywhere in a team's panel to add a point; swipe down to remove one.
 
 - Implement `useSwipeScore` hook using `@use-gesture/react`
@@ -118,7 +137,7 @@ src/
 
 ---
 
-### Milestone 4 — Match Configuration & Quick Start
+### Milestone 5 — Match Configuration & Quick Start
 **Goal:** New match flow that takes ≤3 taps to start with default settings.
 
 - Home screen: "Start Match" button launches immediately with last-used settings
@@ -135,7 +154,7 @@ src/
 
 ---
 
-### Milestone 5 — Set/Match Win Feedback & Polish
+### Milestone 6 — Set/Match Win Feedback & Polish
 **Goal:** Satisfying feedback on set and match completion; polished UI.
 
 - `SetWinOverlay`: full-screen animated overlay on set win (team name, confetti or similar)
@@ -150,7 +169,7 @@ src/
 
 ---
 
-### Milestone 6 — Match History (Optional / Stretch)
+### Milestone 7 — Match History (Optional / Stretch)
 **Goal:** Persist and review completed match records.
 
 - Store completed match results in `localStorage`
@@ -193,3 +212,8 @@ src/
 - [ ] Language choice persists across app restarts
 - [ ] All UI strings (labels, overlays, dialogs) are translated in both locales
 - [ ] No hardcoded English strings outside locale files
+- [ ] Push to `main` triggers the GitHub Actions workflow
+- [ ] Build succeeds in CI and `dist/` is deployed to GitHub Pages
+- [ ] `https://borja-munoz.github.io/spikeboard` loads correctly
+- [ ] PWA is installable from the GitHub Pages URL
+- [ ] All assets (JS, CSS, icons) load without 404 under the `/spikeboard/` base path
