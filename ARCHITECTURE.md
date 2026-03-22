@@ -34,15 +34,17 @@ i18next supports offline-capable, synchronous initialization with bundled locale
 
 ---
 
-## Gestures: @use-gesture/react (planned — Milestone 4)
+## Gestures: @use-gesture/react
 
-`@use-gesture/react` provides composable gesture hooks that normalize pointer, touch, and mouse events. It will be used for the swipe-up/swipe-down score controls: a vertical drag beyond a ~50 px threshold increments or decrements the score. Horizontal drags are ignored to avoid conflicts with system navigation gestures.
+`@use-gesture/react` provides composable gesture hooks that normalize pointer, touch, and mouse events. The `useSwipeScore` hook uses `useDrag` with `axis: 'lock'`, which locks each gesture to the dominant axis — a swipe that starts horizontally never accidentally registers as a point. A secondary guard rejects drags where horizontal displacement exceeds half the vertical, catching diagonal touches. A 50 px vertical threshold must be crossed before a point is committed. `touch-action: none` is applied to each panel so the browser does not intercept the gesture for scrolling.
 
 ---
 
-## Animations: Framer Motion (planned — Milestone 6)
+## Animations: Framer Motion
 
-Framer Motion will handle score-change animations (scale/flip) and the set-win overlay transition. It was preferred over pure CSS animations because it supports layout animations, spring physics, and unmount animations (`AnimatePresence`) without manual class toggling.
+Framer Motion was preferred over pure CSS animations because it supports spring physics, layout animations, and unmount animations (`AnimatePresence`) without manual class toggling.
+
+Currently used for the score-change animation: the score number is a `motion.div` keyed on its value, so every change triggers a spring pop (scale 1.25 → 1, ~150 ms). Set-win overlay transitions are planned for a later milestone.
 
 ---
 

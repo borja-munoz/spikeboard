@@ -1,4 +1,6 @@
+import { motion } from 'framer-motion'
 import { useMatchStore } from '../store/matchStore'
+import { useSwipeScore } from '../hooks/useSwipeScore'
 import type { Team } from '../types/match'
 
 interface Props {
@@ -16,10 +18,13 @@ export function ScorePanel({ team }: Props) {
   const isWinner = matchWinner === team
   const isDisabled = !!matchWinner
 
+  const bind = useSwipeScore(team)
+
   return (
     <div
+      {...bind()}
       className={[
-        'relative flex flex-1 flex-col items-center justify-between py-8 px-4 select-none',
+        'relative flex flex-1 flex-col items-center justify-between py-8 px-4 select-none touch-none',
         team === 'A' ? 'bg-slate-800' : 'bg-slate-700',
         isWinner ? 'bg-amber-900!' : '',
       ].join(' ')}
@@ -45,12 +50,18 @@ export function ScorePanel({ team }: Props) {
         ))}
       </div>
 
-      {/* Current set score */}
-      <div className="text-[clamp(6rem,20vw,10rem)] font-bold tabular-nums leading-none text-white">
+      {/* Current set score — re-animates on every change */}
+      <motion.div
+        key={currentScore}
+        initial={{ scale: 1.25, opacity: 0.6 }}
+        animate={{ scale: 1, opacity: 1 }}
+        transition={{ type: 'spring', stiffness: 400, damping: 20 }}
+        className="text-[clamp(6rem,20vw,10rem)] font-bold tabular-nums leading-none text-white"
+      >
         {currentScore}
-      </div>
+      </motion.div>
 
-      {/* Buttons */}
+      {/* Buttons (fallback for non-gesture users) */}
       <div className="flex flex-col items-center gap-3">
         <button
           onClick={() => addPoint(team)}
