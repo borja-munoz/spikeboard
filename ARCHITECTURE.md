@@ -24,13 +24,21 @@ Tailwind's utility-first approach keeps styles co-located with markup and elimin
 
 ## State management: Zustand
 
-Zustand was chosen over React Context + `useReducer` and Redux Toolkit. The match state (scores, sets, serving) is a single, relatively flat object that doesn't benefit from React's rendering model — it needs to be read and mutated by several unrelated components. Zustand provides a plain JavaScript store with React hooks, no boilerplate, and built-in `localStorage` persistence middleware for user settings. Bundle size is ~1 kB.
+Zustand was chosen over React Context + `useReducer` and Redux Toolkit. Match state (scores, sets, serving) is a single, relatively flat object that doesn't benefit from React's rendering model — it needs to be read and mutated by several unrelated components. Zustand provides a plain JavaScript store with React hooks, no boilerplate, and a `persist` middleware for `localStorage`. Bundle size is ~1 kB.
+
+Two stores are in use:
+- **`matchStore`** — in-memory only; holds the live match state and all scoring actions. Intentionally not persisted: a page reload always starts fresh.
+- **`settingsStore`** — persisted to `localStorage` under the key `spikeboard-settings` via the `persist` middleware; holds `MatchConfig` (team names, format, points, leads). Changes are written immediately on every update, so settings survive page reloads and app reinstalls.
+
+Language preference is handled separately by i18next (see below) and is not stored in either Zustand store.
 
 ---
 
 ## Internationalization: i18next + react-i18next
 
 i18next supports offline-capable, synchronous initialization with bundled locale files (no network fetch needed). The `i18next-browser-languagedetector` plugin reads `navigator.language` and a `localStorage` key so the correct language is applied before the first render — no flash of wrong language. Only English and Spanish are supported; all UI strings live in `src/i18n/locales/`.
+
+Calling `i18n.changeLanguage()` at runtime (from the language toggle in the config sheet) immediately re-renders all components that use `useTranslation()`, and the detector plugin persists the choice to `localStorage` under `spikeboard-language` automatically. No manual persistence code is needed.
 
 ---
 
@@ -44,7 +52,11 @@ i18next supports offline-capable, synchronous initialization with bundled locale
 
 Framer Motion was preferred over pure CSS animations because it supports spring physics, layout animations, and unmount animations (`AnimatePresence`) without manual class toggling.
 
-Currently used for the score-change animation: the score number is a `motion.div` keyed on its value, so every change triggers a spring pop (scale 1.25 → 1, ~150 ms). Set-win overlay transitions are planned for a later milestone.
+Currently used in two places:
+- **Score number** — `motion.div` keyed on the score value; every change triggers a spring pop (scale 1.25 → 1).
+- **Config sheet and reset dialog** — `AnimatePresence` drives mount/unmount; the sheet slides up from the bottom (`y: 100% → 0`) and the dialog scales in (`scale: 0.92 → 1`), both using spring transitions.
+
+Set-win overlay transitions are planned for a later milestone.
 
 ---
 

@@ -41,6 +41,7 @@ interface MatchStore extends MatchState {
   removePoint: (team: Team) => void
   switchServing: () => void
   resetMatch: () => void
+  startMatch: (config: MatchConfig) => void
 }
 
 export const useMatchStore = create<MatchStore>((set, get) => ({
@@ -97,5 +98,9 @@ export const useMatchStore = create<MatchStore>((set, get) => ({
 
   resetMatch: () => {
     set(initialState(get().config))
+  },
+
+  startMatch: (config: MatchConfig) => {
+    set(initialState(config))
   },
 }))

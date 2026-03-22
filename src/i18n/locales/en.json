@@ -27,6 +27,8 @@
     "teamB": "Team B",
     "sound": "Sound Effects",
     "language": "Language",
+    "setRules": "Set Rules",
+    "tiebreakRules": "Tie-break Rules",
     "useDefaults": "Use Defaults",
     "save": "Save"
   },

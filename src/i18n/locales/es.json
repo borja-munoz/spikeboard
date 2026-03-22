@@ -27,6 +27,8 @@
     "teamB": "Equipo B",
     "sound": "Efectos de Sonido",
     "language": "Idioma",
+    "setRules": "Reglas del Set",
+    "tiebreakRules": "Reglas del Tie-break",
     "useDefaults": "Usar Valores por Defecto",
     "save": "Guardar"
   },
