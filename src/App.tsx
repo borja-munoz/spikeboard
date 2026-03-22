@@ -1,13 +1,14 @@
-import { useTranslation } from 'react-i18next'
+import { MatchHeader } from './components/MatchHeader'
+import { ScorePanel } from './components/ScorePanel'
 
 function App() {
-  const { t } = useTranslation()
-
   return (
-    <div className="flex min-h-screen items-center justify-center bg-slate-900 text-white">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold tracking-tight">{t('app.name')}</h1>
-        <p className="mt-2 text-slate-400">{t('home.startMatch')}</p>
+    <div className="flex h-screen flex-col bg-slate-900 overflow-hidden">
+      <MatchHeader />
+      <div className="flex flex-1">
+        <ScorePanel team="A" />
+        <div className="w-px bg-slate-600" />
+        <ScorePanel team="B" />
       </div>
     </div>
   )
