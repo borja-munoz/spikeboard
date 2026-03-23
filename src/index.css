@@ -1,1 +1,19 @@
 @import "tailwindcss";
+
+/* Doto — dot-matrix display font (SIL Open Font License) */
+@font-face {
+  font-family: 'Doto';
+  font-style: normal;
+  font-weight: 700;
+  font-display: block;
+  src: url('/spikeboard/fonts/Doto-Bold.woff2') format('woff2');
+}
+
+/* DSEG7 Modern — 7-segment LED display font (SIL Open Font License) */
+@font-face {
+  font-family: 'DSEG7';
+  font-style: normal;
+  font-weight: 700;
+  font-display: block;
+  src: url('/spikeboard/fonts/DSEG7Modern-Bold.woff2') format('woff2');
+}

@@ -10,7 +10,8 @@
     "team": "Team",
     "set": "Set",
     "match": "Match",
-    "serving": "Serving"
+    "serving": "Serving",
+    "winSet": "Win Set"
   },
   "config": {
     "title": "Match Settings",
@@ -25,6 +26,7 @@
     "teamNames": "Team Names",
     "teamA": "Team A",
     "teamB": "Team B",
+    "teamColors": "Team Colors",
     "sound": "Sound Effects",
     "language": "Language",
     "setRules": "Set Rules",

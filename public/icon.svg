@@ -1,0 +1,90 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="96" fill="#0f172a"/>
+
+  <!--
+    Mikasa MVA200-style 6-panel volleyball
+    ════════════════════════════════════════
+    Ball centre (256,256) r=170. Six boundary points every 60°:
+      P1 300° (341,109)   P4 120° (171,403)
+      P2 240° (171,109)   P5  60° (341,403)
+      P3 180° ( 86,256)   P6   0° (426,256)
+
+    Three S-curve seams — all pass through centre (256,256) at t=0.5.
+    Control point rule: CP1x+CP2x=512, CP1y+CP2y=512.
+      S1: P1→P4  M341 109 C390 185 122 327 171 403
+      S2: P2→P5  M171 109 C122 185 390 327 341 403
+      S3: P3→P6  M 86 256 C166 170 346 342 426 256
+
+    Half-seams (De Casteljau split at t=0.5):
+      S1a P1→C : C365.5 147   310.75 201.5  256 256
+      S1b C→P4 : C201.25 310.5 146.5 365    171 403
+      S2a P2→C : C146.5 147   201.25 201.5  256 256
+      S2b C→P5 : C310.75 310.5 365.5 365    341 403
+      S3a P3→C : C126 213     191 234.5      256 256
+      S3b C→P6 : C321 277.5   386 299        426 256
+
+    Colour scheme — Mikasa MVA200:
+      Blue   #1246a8 : panels 1 (top), 3 (lower-left), 5 (lower-right)
+      Yellow #ffc72c : panels 2 (upper-left), 4 (bottom), 6 (upper-right)
+  -->
+
+  <defs>
+    <!-- Sphere shading: bright upper-left, darker lower-right -->
+    <radialGradient id="shade" cx="36%" cy="30%" r="72%">
+      <stop offset="0%"   stop-color="#ffffff" stop-opacity="0.32"/>
+      <stop offset="55%"  stop-color="#ffffff" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0.22"/>
+    </radialGradient>
+  </defs>
+
+  <clipPath id="c"><circle cx="256" cy="256" r="170"/></clipPath>
+
+  <!-- Panel 1 — Top — Blue -->
+  <path clip-path="url(#c)" fill="#1246a8"
+    d="M341 109 A170 170 0 0 0 171 109
+       C146.5 147 201.25 201.5 256 256
+       C310.75 201.5 365.5 147 341 109 Z"/>
+
+  <!-- Panel 2 — Upper-Left — Yellow -->
+  <path clip-path="url(#c)" fill="#ffc72c"
+    d="M171 109 A170 170 0 0 0 86 256
+       C126 213 191 234.5 256 256
+       C201.25 201.5 146.5 147 171 109 Z"/>
+
+  <!-- Panel 3 — Lower-Left — Blue -->
+  <path clip-path="url(#c)" fill="#1246a8"
+    d="M86 256 A170 170 0 0 0 171 403
+       C146.5 365 201.25 310.5 256 256
+       C191 234.5 126 213 86 256 Z"/>
+
+  <!-- Panel 4 — Bottom — Yellow -->
+  <path clip-path="url(#c)" fill="#ffc72c"
+    d="M171 403 A170 170 0 0 0 341 403
+       C365.5 365 310.75 310.5 256 256
+       C201.25 310.5 146.5 365 171 403 Z"/>
+
+  <!-- Panel 5 — Lower-Right — Blue -->
+  <path clip-path="url(#c)" fill="#1246a8"
+    d="M341 403 A170 170 0 0 0 426 256
+       C386 299 321 277.5 256 256
+       C310.75 310.5 365.5 365 341 403 Z"/>
+
+  <!-- Panel 6 — Upper-Right — Yellow -->
+  <path clip-path="url(#c)" fill="#ffc72c"
+    d="M426 256 A170 170 0 0 0 341 109
+       C365.5 147 310.75 201.5 256 256
+       C321 277.5 386 299 426 256 Z"/>
+
+  <!-- Sphere shading overlay -->
+  <circle clip-path="url(#c)" cx="256" cy="256" r="170" fill="url(#shade)"/>
+
+  <!-- Seam lines -->
+  <g clip-path="url(#c)" fill="none" stroke="#071028" stroke-width="11" stroke-linecap="round">
+    <path d="M341 109 C390 185 122 327 171 403"/>
+    <path d="M171 109 C122 185 390 327 341 403"/>
+    <path d="M 86 256 C166 170 346 342 426 256"/>
+  </g>
+
+  <!-- Ball rim -->
+  <circle cx="256" cy="256" r="170" fill="none" stroke="#071028" stroke-width="6"/>
+</svg>

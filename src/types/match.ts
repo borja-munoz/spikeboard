@@ -7,6 +7,7 @@ export interface MatchConfig {
   tiebreakPoints: number
   tiebreakMinLead: number
   teamNames: [string, string]
+  teamColors: [string, string]
 }
 
 export const DEFAULT_CONFIG: MatchConfig = {
@@ -16,6 +17,7 @@ export const DEFAULT_CONFIG: MatchConfig = {
   tiebreakPoints: 15,
   tiebreakMinLead: 2,
   teamNames: ['Team A', 'Team B'],
+  teamColors: ['#3b82f6', '#ef4444'],
 }
 
 export interface SetScore {

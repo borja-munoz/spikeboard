@@ -140,26 +140,53 @@ src/
 ### Milestone 5 — Match Configuration & Quick Start
 **Goal:** New match flow that takes ≤3 taps to start with default settings.
 
-- Home screen: "Start Match" button launches immediately with last-used settings
-- Optional bottom sheet (slide up) for configuration before starting:
+- Home screen: "Start Match" button launches immediately with last-used settings *(navigation model revised in Milestone 6 — home screen removed)*
+- Bottom sheet (slide up) for configuration:
   - Team names
   - Sets to win
   - Points per set / tie-break rules
-- "Use defaults" skips config entirely
+- "Use defaults" resets fields to defaults
 - Language selector in the config sheet (English / Español)
-- Settings persisted in `localStorage` via Zustand middleware (including chosen language)
+- Settings persisted in `localStorage` via Zustand middleware (`spikeboard-settings`)
 - "Reset Match" confirmation dialog
 
 **Done when:** A match can be started in one tap and configured in one sheet, with all text in the selected language.
 
 ---
 
-### Milestone 6 — Set/Match Win Feedback & Polish
+### Milestone 6 — UI/UX & Visual Identity
+**Goal:** Replace placeholder visuals with a coherent identity; streamline navigation so the scoreboard is always the first thing the user sees.
+
+**Font**
+- Adopt **Doto** (Google Fonts) as the display font for score numbers — dot-matrix style suits a courtside scoreboard aesthetic
+- Self-host the font file (WOFF2) so it loads offline; reference it via `@font-face` in the global CSS
+
+**App icon**
+- Design and produce a Spikeboard icon (volleyball-themed) in the required sizes: `favicon.svg`, `icon-192.png`, `icon-512.png`, `apple-touch-icon.png` (180×180)
+- Replace the current placeholder icons; verify the icon appears correctly on Android and iOS home screens after install
+
+**UI icons via Lucide React**
+- Add **Lucide React** (already listed in the tech stack) as a dependency
+- Replace text-only controls with icon buttons:
+  - Reset / new match → `RotateCcw`
+  - Open config sheet → `SlidersHorizontal`
+  - Serving indicator → `Circle` (filled for serving team)
+  - Undo point (−1) → `Undo2`
+
+**Remove home screen; config accessible from the scoreboard**
+- Delete `HomeScreen` component; the app opens directly to the scoreboard with last-used settings applied
+- Add a config icon button to `MatchHeader`; tapping it opens `ConfigSheet`
+- Replace the "Start Match" button inside `ConfigSheet` with a "New Match" button — same behaviour (applies settings and resets the match) but makes sense when invoked mid-game
+
+**Done when:** The app opens straight to the scoreboard, score numbers render in the dot-matrix font, all icon buttons are self-explanatory without labels, and the installed PWA shows the custom icon on the home screen.
+
+---
+
+### Milestone 7 — Set/Match Win Feedback & Polish
 **Goal:** Satisfying feedback on set and match completion; polished UI.
 
 - `SetWinOverlay`: full-screen animated overlay on set win (team name, confetti or similar)
 - Match win screen: final score summary, option to start a new match
-- Score number uses large, bold font — readable from a few meters
 - Dark mode support (respects system preference via Tailwind `dark:`)
 - Smooth score change animations (Framer Motion number flip or scale)
 - PWA update prompt when a new version is deployed
@@ -169,7 +196,7 @@ src/
 
 ---
 
-### Milestone 7 — Match History (Optional / Stretch)
+### Milestone 8 — Match History (Optional / Stretch)
 **Goal:** Persist and review completed match records.
 
 - Store completed match results in `localStorage`

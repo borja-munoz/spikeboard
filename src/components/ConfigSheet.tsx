@@ -4,10 +4,22 @@ import { useSettingsStore } from '../store/settingsStore'
 import { useMatchStore } from '../store/matchStore'
 import i18n from '../i18n'
 
+const TEAM_COLOR_SWATCHES = [
+  '#3b82f6', // blue
+  '#ef4444', // red
+  '#22c55e', // green
+  '#eab308', // yellow
+  '#a855f7', // purple
+  '#f97316', // orange
+  '#06b6d4', // cyan
+  '#ec4899', // pink
+  '#ffffff', // white
+  '#94a3b8', // slate
+]
+
 interface Props {
   isOpen: boolean
   onClose: () => void
-  onStart: () => void
 }
 
 function Stepper({
@@ -42,16 +54,16 @@ function Stepper({
   )
 }
 
-export function ConfigSheet({ isOpen, onClose, onStart }: Props) {
+export function ConfigSheet({ isOpen, onClose }: Props) {
   const { t } = useTranslation()
   const { config, updateConfig, resetToDefaults } = useSettingsStore()
   const { startMatch } = useMatchStore()
 
   const currentLang = i18n.resolvedLanguage ?? 'en'
 
-  const handleStart = () => {
+  const handleNewMatch = () => {
     startMatch(config)
-    onStart()
+    onClose()
   }
 
   const FORMAT_OPTIONS = [
@@ -112,6 +124,49 @@ export function ConfigSheet({ isOpen, onClose, onStart }: Props) {
                     className="w-full rounded-xl bg-slate-800 px-4 py-3 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-slate-600"
                   />
                 </div>
+              </section>
+
+              {/* Team Colors */}
+              <section>
+                <h3 className="mb-3 text-xs font-semibold uppercase tracking-wider text-slate-400">
+                  {t('config.teamColors')}
+                </h3>
+                {(['0', '1'] as const).map((idx) => {
+                  const i = Number(idx)
+                  const selected = config.teamColors[i]
+                  return (
+                    <div key={i} className="mb-3 flex items-center gap-3">
+                      {/* Selected color preview + team label */}
+                      <span
+                        className="h-5 w-5 shrink-0 rounded"
+                        style={{ background: selected, boxShadow: `0 0 6px ${selected}88` }}
+                      />
+                      <span className="w-16 text-sm text-slate-400">
+                        {config.teamNames[i] || (i === 0 ? t('config.teamA') : t('config.teamB'))}
+                      </span>
+                      {/* Color swatches */}
+                      <div className="flex flex-wrap gap-2">
+                        {TEAM_COLOR_SWATCHES.map((color) => (
+                          <button
+                            key={color}
+                            onClick={() => {
+                              const next: [string, string] = [...config.teamColors] as [string, string]
+                              next[i] = color
+                              updateConfig({ teamColors: next })
+                            }}
+                            className="h-7 w-7 rounded-lg transition-transform active:scale-90"
+                            style={{
+                              background: color,
+                              outline: selected === color ? `2px solid white` : '2px solid transparent',
+                              outlineOffset: '2px',
+                            }}
+                            aria-label={color}
+                          />
+                        ))}
+                      </div>
+                    </div>
+                  )
+                })}
               </section>
 
               {/* Match Format */}
@@ -216,10 +271,10 @@ export function ConfigSheet({ isOpen, onClose, onStart }: Props) {
             {/* Footer */}
             <div className="space-y-3 border-t border-slate-800 px-6 py-4 pb-8">
               <button
-                onClick={handleStart}
+                onClick={handleNewMatch}
                 className="w-full rounded-2xl bg-green-600 py-4 text-lg font-bold text-white active:scale-95 transition-transform"
               >
-                {t('home.startMatch')}
+                {t('overlay.newMatch')}
               </button>
               <button
                 onClick={resetToDefaults}

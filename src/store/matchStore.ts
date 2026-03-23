@@ -2,6 +2,20 @@ import { create } from 'zustand'
 import type { Team, MatchConfig, MatchState, SetScore } from '../types/match'
 import { DEFAULT_CONFIG } from '../types/match'
 
+/** Read persisted MatchConfig from settingsStore's localStorage entry on startup. */
+function getStoredConfig(): MatchConfig {
+  try {
+    const raw = localStorage.getItem('spikeboard-settings')
+    if (raw) {
+      const { state } = JSON.parse(raw) as { state?: { config?: MatchConfig } }
+      if (state?.config) return { ...DEFAULT_CONFIG, ...state.config }
+    }
+  } catch {
+    // ignore — fall through to default
+  }
+  return DEFAULT_CONFIG
+}
+
 function isTiebreakSet(setIndex: number, config: MatchConfig): boolean {
   const maxSets = config.setsToWin * 2 - 1
   return maxSets > 1 && setIndex === maxSets - 1
@@ -42,10 +56,12 @@ interface MatchStore extends MatchState {
   switchServing: () => void
   resetMatch: () => void
   startMatch: (config: MatchConfig) => void
+  updateTeamName: (team: Team, name: string) => void
+  assignSet: (team: Team) => void
 }
 
 export const useMatchStore = create<MatchStore>((set, get) => ({
-  ...initialState(),
+  ...initialState(getStoredConfig()),
 
   addPoint: (team: Team) => {
     const state = get()
@@ -102,5 +118,32 @@ export const useMatchStore = create<MatchStore>((set, get) => ({
 
   startMatch: (config: MatchConfig) => {
     set(initialState(config))
+  },
+
+  updateTeamName: (team: Team, name: string) => {
+    const { config } = get()
+    const teamNames: [string, string] =
+      team === 'A' ? [name, config.teamNames[1]] : [config.teamNames[0], name]
+    set({ config: { ...config, teamNames } })
+  },
+
+  assignSet: (team: Team) => {
+    const state = get()
+    if (state.matchWinner) return
+
+    const { sets, currentSetIndex, config, setsWon } = state
+    const newSets = [...sets]
+    newSets[currentSetIndex] = { ...newSets[currentSetIndex], winner: team }
+    const newSetsWon = { ...setsWon, [team]: setsWon[team] + 1 }
+
+    if (newSetsWon[team] >= config.setsToWin) {
+      set({ sets: newSets, setsWon: newSetsWon, matchWinner: team })
+    } else {
+      set({
+        sets: [...newSets, emptySet()],
+        currentSetIndex: currentSetIndex + 1,
+        setsWon: newSetsWon,
+      })
+    }
   },
 }))

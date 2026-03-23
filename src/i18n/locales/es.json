@@ -10,7 +10,8 @@
     "team": "Equipo",
     "set": "Set",
     "match": "Partido",
-    "serving": "Saque"
+    "serving": "Saque",
+    "winSet": "Ganar Set"
   },
   "config": {
     "title": "Configuración del Partido",
@@ -25,6 +26,7 @@
     "teamNames": "Nombres de Equipos",
     "teamA": "Equipo A",
     "teamB": "Equipo B",
+    "teamColors": "Colores de Equipos",
     "sound": "Efectos de Sonido",
     "language": "Idioma",
     "setRules": "Reglas del Set",
