@@ -53,5 +53,11 @@
     "resetMessage": "Are you sure you want to reset the current match?",
     "confirm": "Reset",
     "cancel": "Cancel"
+  },
+  "history": {
+    "title": "Match History",
+    "empty": "No matches recorded yet",
+    "clearAll": "Clear History",
+    "confirmClear": "Delete all match history?"
   }
 }

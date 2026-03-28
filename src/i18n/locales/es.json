@@ -53,5 +53,11 @@
     "resetMessage": "¿Seguro que quieres reiniciar el partido actual?",
     "confirm": "Reiniciar",
     "cancel": "Cancelar"
+  },
+  "history": {
+    "title": "Historial de Partidos",
+    "empty": "Aún no hay partidos registrados",
+    "clearAll": "Borrar Historial",
+    "confirmClear": "¿Eliminar todo el historial?"
   }
 }
