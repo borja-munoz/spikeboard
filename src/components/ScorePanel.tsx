@@ -25,7 +25,6 @@ export function ScorePanel({ team }: Props) {
   const teamColor = config.teamColors[teamIndex]
   const currentScore = sets[currentSetIndex][team]
 
-  const isWinner = matchWinner === team
   const isDisabled = !!matchWinner
   const ghostDigits = currentScore < 10 ? '8' : '88'
 
@@ -162,17 +161,6 @@ export function ScorePanel({ team }: Props) {
         </div>
       </div>
 
-      {/* ── Match winner overlay ── */}
-      {isWinner && (
-        <div className="pointer-events-none absolute inset-0 flex items-center justify-center bg-amber-950/40">
-          <span
-            className="rounded-2xl border border-[#92400e] bg-[#0c0d14] px-6 py-3 text-3xl font-bold text-amber-400"
-            style={{ textShadow: SCORE_GLOW }}
-          >
-            🏆
-          </span>
-        </div>
-      )}
     </div>
   )
 }

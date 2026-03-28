@@ -33,4 +33,5 @@ export interface MatchState {
   setsWon: { A: number; B: number }
   serving: Team
   matchWinner: Team | null
+  lastCompletedSet: { index: number; winner: Team } | null
 }

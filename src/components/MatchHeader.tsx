@@ -3,13 +3,15 @@ import { useTranslation } from 'react-i18next'
 import { RotateCcw, SlidersHorizontal } from 'lucide-react'
 import { useMatchStore } from '../store/matchStore'
 import { ResetDialog } from './ResetDialog'
-import { ConfigSheet } from './ConfigSheet'
 
-export function MatchHeader() {
+interface Props {
+  onOpenConfig: () => void
+}
+
+export function MatchHeader({ onOpenConfig }: Props) {
   const { t } = useTranslation()
   const { sets, currentSetIndex, matchWinner, config, resetMatch } = useMatchStore()
   const [showDialog, setShowDialog] = useState(false)
-  const [showConfig, setShowConfig] = useState(false)
 
   const maxSets = config.setsToWin * 2 - 1
   const [colorA, colorB] = config.teamColors
@@ -74,7 +76,7 @@ export function MatchHeader() {
         {/* Right — icon buttons */}
         <div className="flex w-20 shrink-0 items-center justify-end gap-0.5">
           <button
-            onClick={() => setShowConfig(true)}
+            onClick={onOpenConfig}
             className="rounded-lg p-2 text-slate-600 transition-colors active:bg-[#0d0e14] active:text-slate-400"
             aria-label={t('config.title')}
           >
@@ -95,7 +97,6 @@ export function MatchHeader() {
         onConfirm={() => { resetMatch(); setShowDialog(false) }}
         onCancel={() => setShowDialog(false)}
       />
-      <ConfigSheet isOpen={showConfig} onClose={() => setShowConfig(false)} />
     </>
   )
 }

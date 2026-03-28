@@ -47,6 +47,7 @@ function initialState(config: MatchConfig = DEFAULT_CONFIG): MatchState {
     setsWon: { A: 0, B: 0 },
     serving: 'A',
     matchWinner: null,
+    lastCompletedSet: null,
   }
 }
 
@@ -58,6 +59,7 @@ interface MatchStore extends MatchState {
   startMatch: (config: MatchConfig) => void
   updateTeamName: (team: Team, name: string) => void
   assignSet: (team: Team) => void
+  clearSetAlert: () => void
 }
 
 export const useMatchStore = create<MatchStore>((set, get) => ({
@@ -86,6 +88,7 @@ export const useMatchStore = create<MatchStore>((set, get) => ({
           sets: [...newSets, emptySet()],
           currentSetIndex: currentSetIndex + 1,
           setsWon: newSetsWon,
+          lastCompletedSet: { index: currentSetIndex, winner: setWinner },
         })
       }
     } else {
@@ -143,7 +146,10 @@ export const useMatchStore = create<MatchStore>((set, get) => ({
         sets: [...newSets, emptySet()],
         currentSetIndex: currentSetIndex + 1,
         setsWon: newSetsWon,
+        lastCompletedSet: { index: currentSetIndex, winner: team },
       })
     }
   },
+
+  clearSetAlert: () => set({ lastCompletedSet: null }),
 }))

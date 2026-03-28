@@ -38,7 +38,15 @@
     "setWon": "¡{{team}} gana el set!",
     "matchWon": "¡{{team}} gana el partido!",
     "newMatch": "Nuevo Partido",
-    "rematch": "Revancha"
+    "rematch": "Revancha",
+    "winsTheSet": "gana el set",
+    "winsTheMatch": "gana el partido",
+    "tapToContinue": "toca para continuar"
+  },
+  "pwa": {
+    "updateAvailable": "Actualización disponible",
+    "reload": "Recargar",
+    "dismiss": "Ahora no"
   },
   "dialog": {
     "resetTitle": "Reiniciar Partido",
