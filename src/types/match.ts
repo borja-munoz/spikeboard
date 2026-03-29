@@ -34,4 +34,5 @@ export interface MatchState {
   serving: Team
   matchWinner: Team | null
   lastCompletedSet: { index: number; winner: Team } | null
+  timeouts: { A: number; B: number }
 }

@@ -2,6 +2,8 @@ import { useEffect, useRef, useState } from 'react'
 import { AnimatePresence } from 'framer-motion'
 import { useMatchStore } from './store/matchStore'
 import { useHistoryStore } from './store/historyStore'
+import { useWakeLock } from './hooks/useWakeLock'
+import { useSounds } from './hooks/useSounds'
 import { MatchHeader } from './components/MatchHeader'
 import { ScorePanel } from './components/ScorePanel'
 import { ConfigSheet } from './components/ConfigSheet'
@@ -16,6 +18,12 @@ function App() {
   const { matchWinner, sets, setsWon, config, resetMatch } = useMatchStore()
   const { addRecord } = useHistoryStore()
   const prevWinnerRef = useRef<string | null>(null)
+
+  // Wake lock: keep screen on while a match is active
+  useWakeLock(!matchWinner && sets.some(s => s.A > 0 || s.B > 0))
+
+  // Sound effects
+  useSounds()
 
   // Persist match to history when it ends
   useEffect(() => {

@@ -28,6 +28,8 @@
     "teamB": "Equipo B",
     "teamColors": "Colores de Equipos",
     "sound": "Efectos de Sonido",
+    "soundOn": "Activado",
+    "soundOff": "Desactivado",
     "language": "Idioma",
     "setRules": "Reglas del Set",
     "tiebreakRules": "Reglas del Tie-break",

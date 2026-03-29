@@ -56,7 +56,7 @@ function Stepper({
 
 export function ConfigSheet({ isOpen, onClose }: Props) {
   const { t } = useTranslation()
-  const { config, updateConfig, resetToDefaults } = useSettingsStore()
+  const { config, updateConfig, resetToDefaults, soundEnabled, setSoundEnabled } = useSettingsStore()
   const { startMatch } = useMatchStore()
 
   const currentLang = i18n.resolvedLanguage ?? 'en'
@@ -262,6 +262,26 @@ export function ConfigSheet({ isOpen, onClose }: Props) {
                       }`}
                     >
                       {code === 'en' ? 'English' : 'Español'}
+                    </button>
+                  ))}
+                </div>
+              </section>
+
+              {/* Sound */}
+              <section>
+                <h3 className="mb-3 text-xs font-semibold uppercase tracking-wider text-slate-400">
+                  {t('config.sound')}
+                </h3>
+                <div className="flex gap-2">
+                  {([true, false] as const).map((val) => (
+                    <button
+                      key={String(val)}
+                      onClick={() => setSoundEnabled(val)}
+                      className={`flex-1 rounded-xl py-2.5 text-sm font-semibold transition-colors ${
+                        soundEnabled === val ? 'bg-green-600 text-white' : 'bg-slate-800 text-slate-300'
+                      }`}
+                    >
+                      {val ? t('config.soundOn') : t('config.soundOff')}
                     </button>
                   ))}
                 </div>

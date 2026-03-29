@@ -1,7 +1,8 @@
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { History, RotateCcw, SlidersHorizontal } from 'lucide-react'
+import { History, RotateCcw, SlidersHorizontal, Volume2, VolumeX } from 'lucide-react'
 import { useMatchStore } from '../store/matchStore'
+import { useSettingsStore } from '../store/settingsStore'
 import { ResetDialog } from './ResetDialog'
 
 interface Props {
@@ -12,6 +13,7 @@ interface Props {
 export function MatchHeader({ onOpenConfig, onOpenHistory }: Props) {
   const { t } = useTranslation()
   const { sets, currentSetIndex, matchWinner, config, resetMatch } = useMatchStore()
+  const { soundEnabled, setSoundEnabled } = useSettingsStore()
   const [showDialog, setShowDialog] = useState(false)
 
   const maxSets = config.setsToWin * 2 - 1
@@ -75,27 +77,34 @@ export function MatchHeader({ onOpenConfig, onOpenHistory }: Props) {
         </div>
 
         {/* Right — icon buttons */}
-        <div className="flex w-20 shrink-0 items-center justify-end gap-0.5">
+        <div className="flex shrink-0 items-center justify-end">
+          <button
+            onClick={() => setSoundEnabled(!soundEnabled)}
+            className="rounded-lg p-2.5 text-slate-600 transition-colors active:bg-[#0d0e14] active:text-slate-400"
+            aria-label={soundEnabled ? t('config.soundOff') : t('config.soundOn')}
+          >
+            {soundEnabled ? <Volume2 size={25} /> : <VolumeX size={25} />}
+          </button>
           <button
             onClick={onOpenConfig}
-            className="rounded-lg p-2 text-slate-600 transition-colors active:bg-[#0d0e14] active:text-slate-400"
+            className="rounded-lg p-2.5 text-slate-600 transition-colors active:bg-[#0d0e14] active:text-slate-400"
             aria-label={t('config.title')}
           >
-            <SlidersHorizontal size={17} />
+            <SlidersHorizontal size={25} />
           </button>
           <button
             onClick={onOpenHistory}
-            className="rounded-lg p-2 text-slate-600 transition-colors active:bg-[#0d0e14] active:text-slate-400"
+            className="rounded-lg p-2.5 text-slate-600 transition-colors active:bg-[#0d0e14] active:text-slate-400"
             aria-label={t('history.title')}
           >
-            <History size={17} />
+            <History size={25} />
           </button>
           <button
             onClick={() => setShowDialog(true)}
-            className="rounded-lg p-2 text-slate-600 transition-colors active:bg-[#0d0e14] active:text-slate-400"
+            className="rounded-lg p-2.5 text-slate-600 transition-colors active:bg-[#0d0e14] active:text-slate-400"
             aria-label={t('dialog.resetTitle')}
           >
-            <RotateCcw size={17} />
+            <RotateCcw size={25} />
           </button>
         </div>
       </div>

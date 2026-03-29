@@ -11,7 +11,8 @@
     "set": "Set",
     "match": "Match",
     "serving": "Serving",
-    "winSet": "Win Set"
+    "winSet": "Win Set",
+    "timeout": "Timeout"
   },
   "config": {
     "title": "Match Settings",
@@ -28,6 +29,8 @@
     "teamB": "Team B",
     "teamColors": "Team Colors",
     "sound": "Sound Effects",
+    "soundOn": "On",
+    "soundOff": "Off",
     "language": "Language",
     "setRules": "Set Rules",
     "tiebreakRules": "Tie-break Rules",

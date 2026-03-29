@@ -2,6 +2,8 @@ import { create } from 'zustand'
 import type { Team, MatchConfig, MatchState, SetScore } from '../types/match'
 import { DEFAULT_CONFIG } from '../types/match'
 
+const TIMEOUTS_PER_SET = 2
+
 /** Read persisted MatchConfig from settingsStore's localStorage entry on startup. */
 function getStoredConfig(): MatchConfig {
   try {
@@ -48,6 +50,7 @@ function initialState(config: MatchConfig = DEFAULT_CONFIG): MatchState {
     serving: 'A',
     matchWinner: null,
     lastCompletedSet: null,
+    timeouts: { A: 0, B: 0 },
   }
 }
 
@@ -60,6 +63,7 @@ interface MatchStore extends MatchState {
   updateTeamName: (team: Team, name: string) => void
   assignSet: (team: Team) => void
   clearSetAlert: () => void
+  callTimeout: (team: Team) => void
 }
 
 export const useMatchStore = create<MatchStore>((set, get) => ({
@@ -89,6 +93,7 @@ export const useMatchStore = create<MatchStore>((set, get) => ({
           currentSetIndex: currentSetIndex + 1,
           setsWon: newSetsWon,
           lastCompletedSet: { index: currentSetIndex, winner: setWinner },
+          timeouts: { A: 0, B: 0 },
         })
       }
     } else {
@@ -147,9 +152,17 @@ export const useMatchStore = create<MatchStore>((set, get) => ({
         currentSetIndex: currentSetIndex + 1,
         setsWon: newSetsWon,
         lastCompletedSet: { index: currentSetIndex, winner: team },
+        timeouts: { A: 0, B: 0 },
       })
     }
   },
 
   clearSetAlert: () => set({ lastCompletedSet: null }),
+
+  callTimeout: (team: Team) => {
+    const state = get()
+    if (state.matchWinner) return
+    if (state.timeouts[team] >= TIMEOUTS_PER_SET) return
+    set({ timeouts: { ...state.timeouts, [team]: state.timeouts[team] + 1 } })
+  },
 }))

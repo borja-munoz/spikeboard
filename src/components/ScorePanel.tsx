@@ -18,6 +18,7 @@ export function ScorePanel({ team }: Props) {
   const {
     sets, currentSetIndex, config, matchWinner,
     addPoint, removePoint, updateTeamName, assignSet,
+    timeouts, callTimeout,
   } = useMatchStore()
 
   const teamIndex = team === 'A' ? 0 : 1
@@ -59,7 +60,7 @@ export function ScorePanel({ team }: Props) {
       className="relative flex flex-1 flex-col touch-none select-none overflow-hidden bg-[#07080d]"
     >
       {/* ── Team header bar ── */}
-      <div className="flex w-full items-center justify-center gap-2.5 border-b border-[#1a1d2e] bg-[#0c0d14] px-4 py-3">
+      <div className="flex w-full items-center justify-center gap-2.5 border-b border-[#1a1d2e] bg-[#0c0d14] px-4 py-2.5 landscape:py-1.5">
         {/* Team name — tap to edit inline */}
         {isEditing ? (
           <input
@@ -72,13 +73,13 @@ export function ScorePanel({ team }: Props) {
               if (e.key === 'Enter') commitEdit()
               if (e.key === 'Escape') { setEditValue(teamName); setIsEditing(false) }
             }}
-            className="w-full max-w-[130px] bg-transparent text-center text-sm font-bold font-['Doto'] uppercase
+            className="w-full max-w-[130px] bg-transparent text-center text-base font-bold font-['Doto'] uppercase
               tracking-[0.12em] text-slate-200 outline-none border-b border-slate-500"
           />
         ) : (
           <button
             onClick={() => setIsEditing(true)}
-            className="text-sm font-bold font-['Doto'] uppercase tracking-[0.12em] text-slate-200 active:text-white"
+            className="text-base font-bold font-['Doto'] uppercase tracking-[0.12em] text-slate-200 active:text-white"
           >
             {teamName}
           </button>
@@ -129,36 +130,59 @@ export function ScorePanel({ team }: Props) {
       </div>
 
       {/* ── Controls ── */}
-      <div className="flex flex-col items-center gap-3 border-t border-[#1a1d2e] bg-[#0c0d14] px-4 py-5">
-        <button
-          onClick={() => addPoint(team)}
-          disabled={isDisabled}
-          className="h-14 w-32 rounded-xl border border-green-700 bg-green-800 font-['Doto'] text-2xl font-bold text-green-100
-            shadow-[0_4px_0_#14532d] transition-all active:translate-y-[3px] active:shadow-none
-            disabled:translate-y-0 disabled:opacity-25 disabled:shadow-none"
-        >
-          +1
-        </button>
-        <div className="flex gap-2">
+      {/* ── Controls ── */}
+      <div className="flex flex-col items-center gap-2 border-t border-[#1a1d2e] bg-[#0c0d14] px-4 py-3 landscape:py-1.5 landscape:gap-1.5">
+        {/* Main action row: undo — +1 — win set */}
+        <div className="flex items-center gap-2">
           <button
             onClick={() => removePoint(team)}
             disabled={isDisabled}
-            className="flex h-9 w-16 items-center justify-center rounded-lg border border-[#2a2d3e]
-              bg-[#111219] text-slate-500 transition-colors active:bg-[#1a1d2e] disabled:opacity-25"
+            className="flex h-12 w-12 items-center justify-center rounded-xl border border-[#2a2d3e]
+              bg-[#111219] text-slate-500 transition-colors active:bg-[#1a1d2e] disabled:opacity-25
+              landscape:h-9 landscape:w-10"
             aria-label="Undo last point"
           >
-            <Undo2 size={15} />
+            <Undo2 size={16} />
+          </button>
+          <button
+            onClick={() => addPoint(team)}
+            disabled={isDisabled}
+            className="h-12 w-28 rounded-xl border border-green-700 bg-green-800 font-['Doto'] text-xl font-bold text-green-100
+              shadow-[0_3px_0_#14532d] transition-all active:translate-y-[3px] active:shadow-none landscape:h-9 landscape:w-24 landscape:text-base
+              disabled:translate-y-0 disabled:opacity-25 disabled:shadow-none"
+          >
+            +1
           </button>
           <button
             onClick={() => assignSet(team)}
             disabled={isDisabled}
-            className="h-9 rounded-lg border px-3 text-xs font-bold uppercase tracking-wider
-              transition-colors active:opacity-70 disabled:opacity-25"
+            className="h-12 rounded-xl border px-3 text-xs font-bold uppercase tracking-wider
+              transition-colors active:opacity-70 disabled:opacity-25 landscape:h-9"
             style={{ borderColor: teamColor + '66', color: teamColor, background: teamColor + '18' }}
           >
             {t('scoreboard.winSet')}
           </button>
         </div>
+        {/* Timeouts */}
+        <button
+          onClick={() => callTimeout(team)}
+          disabled={isDisabled || timeouts[team] >= 2}
+          className="flex items-center gap-2 disabled:opacity-40"
+          aria-label="Call timeout"
+        >
+          <span className="text-[10px] font-bold uppercase tracking-widest text-slate-600">TO</span>
+          {Array.from({ length: 2 }).map((_, i) => (
+            <span
+              key={i}
+              className="h-2.5 w-2.5 rounded-full transition-all"
+              style={
+                i < timeouts[team]
+                  ? { background: '#1e2030' }
+                  : { background: teamColor, boxShadow: `0 0 4px ${teamColor}88` }
+              }
+            />
+          ))}
+        </button>
       </div>
 
     </div>
