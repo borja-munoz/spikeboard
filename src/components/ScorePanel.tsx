@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion'
 import { useMatchStore } from '../store/matchStore'
 import { useSwipeScore } from '../hooks/useSwipeScore'
+import { LongPressButton } from './LongPressButton'
 import { SwipeHint } from './SwipeHint'
 import type { Team } from '../types/match'
 
@@ -35,11 +36,11 @@ export function ScorePanel({ team }: Props) {
       {[0, 1].map(i => {
         const used = timeouts[team] > i
         return (
-          <button
+          <LongPressButton
             key={i}
-            onClick={() => callTimeout(team)}
+            onComplete={() => callTimeout(team)}
             disabled={isDisabled || used}
-            className="flex h-11 w-9 items-center justify-center rounded-lg text-xs font-bold tracking-wider transition-all active:scale-95"
+            className="flex h-11 w-9 items-center justify-center rounded-lg text-xs font-bold tracking-wider"
             style={
               used
                 ? { background: '#0a0b11', color: '#1e2030', border: '1px solid #1a1d2e' }
@@ -52,7 +53,7 @@ export function ScorePanel({ team }: Props) {
             }
           >
             T{i + 1}
-          </button>
+          </LongPressButton>
         )
       })}
     </div>

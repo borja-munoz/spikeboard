@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next'
 import { History, RotateCcw, SlidersHorizontal, Volume2, VolumeX } from 'lucide-react'
 import { useMatchStore } from '../store/matchStore'
 import { useSettingsStore } from '../store/settingsStore'
+import { LongPressButton } from './LongPressButton'
 import { ResetDialog } from './ResetDialog'
 
 interface Props {
@@ -92,14 +93,14 @@ export function MatchHeader({ onOpenConfig, onOpenHistory }: Props) {
                 </button>
               )}
               {/* Win Set button */}
-              <button
-                onClick={() => assignSet(teamId)}
+              <LongPressButton
+                onComplete={() => assignSet(teamId)}
                 disabled={!!matchWinner}
-                className="rounded-lg px-3 py-2 text-sm font-bold uppercase tracking-wider transition-all active:opacity-70 disabled:opacity-30"
+                className="rounded-lg px-3 py-2 text-sm font-bold uppercase tracking-wider disabled:opacity-30"
                 style={{ background: color + '22', color, border: `1px solid ${color}55` }}
               >
                 {t('scoreboard.winSet')}
-              </button>
+              </LongPressButton>
               {/* Per-set scores */}
               <div className="flex gap-1">
                 {setColumns.map((col, i) => {
