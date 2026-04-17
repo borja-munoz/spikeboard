@@ -59,9 +59,9 @@ export function MatchHeader({ onOpenConfig, onOpenHistory }: Props) {
 
   return (
     <>
-      <div className="flex items-center gap-2 bg-[#030305] px-3 py-2.5 border-b border-[#1a1d2e]">
+      <div className="flex items-center gap-2 bg-[#030305] px-3 py-4 border-b border-[#1a1d2e]">
         {/* Centre — team names + win set buttons + set scores */}
-        <div className="flex flex-1 flex-col gap-1.5">
+        <div className="flex flex-1 flex-col gap-2.5">
           {([
             { color: colorA, name: config.teamNames[0], scoreKey: 'scoreA' as const, teamId: 'A' as const },
             { color: colorB, name: config.teamNames[1], scoreKey: 'scoreB' as const, teamId: 'B' as const },
@@ -95,7 +95,7 @@ export function MatchHeader({ onOpenConfig, onOpenHistory }: Props) {
               <button
                 onClick={() => assignSet(teamId)}
                 disabled={!!matchWinner}
-                className="rounded-md px-2.5 py-1 text-xs font-bold uppercase tracking-wider transition-all active:opacity-70 disabled:opacity-30"
+                className="rounded-lg px-3 py-2 text-sm font-bold uppercase tracking-wider transition-all active:opacity-70 disabled:opacity-30"
                 style={{ background: color + '22', color, border: `1px solid ${color}55` }}
               >
                 {t('scoreboard.winSet')}
