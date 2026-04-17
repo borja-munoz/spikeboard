@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion'
 import { useMatchStore } from '../store/matchStore'
 import { useSwipeScore } from '../hooks/useSwipeScore'
+import { SwipeHint } from './SwipeHint'
 import type { Team } from '../types/match'
 
 interface Props {
@@ -108,6 +109,8 @@ export function ScorePanel({ team }: Props) {
       </div>
 
       {team === 'B' && timeoutStrip}
+
+      <SwipeHint />
     </div>
   )
 }
