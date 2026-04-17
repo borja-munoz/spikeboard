@@ -1,4 +1,3 @@
-import { useEffect, useRef, useState } from 'react'
 import { motion } from 'framer-motion'
 import { useMatchStore } from '../store/matchStore'
 import { useSwipeScore } from '../hooks/useSwipeScore'
@@ -14,38 +13,15 @@ const SCORE_GLOW =
 export function ScorePanel({ team }: Props) {
   const {
     sets, currentSetIndex, config, matchWinner,
-    updateTeamName, timeouts, callTimeout,
+    timeouts, callTimeout,
   } = useMatchStore()
 
   const teamIndex = team === 'A' ? 0 : 1
-  const teamName = config.teamNames[teamIndex]
   const teamColor = config.teamColors[teamIndex]
   const currentScore = sets[currentSetIndex][team]
 
   const isDisabled = !!matchWinner
   const ghostDigits = currentScore < 10 ? '8' : '88'
-
-  // ── Inline name editing ──
-  const [isEditing, setIsEditing] = useState(false)
-  const [editValue, setEditValue] = useState(teamName)
-  const inputRef = useRef<HTMLInputElement>(null)
-
-  useEffect(() => {
-    if (isEditing) {
-      inputRef.current?.focus()
-      inputRef.current?.select()
-    }
-  }, [isEditing])
-
-  useEffect(() => {
-    if (!isEditing) setEditValue(teamName)
-  }, [teamName, isEditing])
-
-  const commitEdit = () => {
-    const trimmed = editValue.trim()
-    updateTeamName(team, trimmed || teamName)
-    setIsEditing(false)
-  }
 
   const bind = useSwipeScore(team)
 
@@ -84,83 +60,54 @@ export function ScorePanel({ team }: Props) {
   return (
     <div
       {...bind()}
-      className="relative flex flex-1 flex-col touch-none select-none overflow-hidden bg-[#07080d]"
+      className="relative flex flex-1 overflow-hidden touch-none select-none bg-[#07080d]"
     >
-      {/* ── Team header bar ── */}
-      <div className="flex w-full items-center justify-center border-b border-[#1a1d2e] bg-[#0c0d14] px-4 py-2.5">
-        {isEditing ? (
-          <input
-            ref={inputRef}
-            type="text"
-            value={editValue}
-            onChange={(e) => setEditValue(e.target.value)}
-            onBlur={commitEdit}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter') commitEdit()
-              if (e.key === 'Escape') { setEditValue(teamName); setIsEditing(false) }
-            }}
-            className="w-full max-w-[130px] bg-transparent text-center text-base font-bold font-['Doto'] uppercase
-              tracking-[0.12em] text-slate-200 outline-none border-b border-slate-500"
-          />
-        ) : (
-          <button
-            onClick={() => setIsEditing(true)}
-            className="text-base font-bold font-['Doto'] uppercase tracking-[0.12em] text-slate-200 active:text-white"
-          >
-            {teamName}
-          </button>
-        )}
-      </div>
+      {team === 'A' && timeoutStrip}
 
-      {/* ── Body: score area + side timeout strip ── */}
-      <div className="flex flex-1 overflow-hidden">
-        {team === 'A' && timeoutStrip}
-
-        {/* Score area */}
-        <div className="flex flex-1 flex-col items-center justify-center gap-5">
-          {/* Sets won pips */}
-          <div className="flex gap-2">
-            {Array.from({ length: config.setsToWin }).map((_, i) => {
-              const filled = i < sets.filter(s => s.winner === team).length
-              return (
-                <span
-                  key={i}
-                  className="h-3 w-3 rounded-full transition-all"
-                  style={filled
-                    ? { background: teamColor, boxShadow: `0 0 5px ${teamColor}, 0 0 10px ${teamColor}88` }
-                    : { background: '#1e2030' }}
-                />
-              )
-            })}
-          </div>
-
-          {/* Score digit with ghost segments */}
-          <div className="relative px-2">
-            <div
-              aria-hidden
-              className="pointer-events-none absolute inset-0 font-['DSEG7'] leading-none text-amber-400 opacity-[0.10]"
-              style={{ fontSize: 'clamp(5.5rem,19vw,9.5rem)' }}
-            >
-              {ghostDigits}
-            </div>
-            <motion.div
-              key={currentScore}
-              initial={{ opacity: 0.5, scale: 1.15 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ type: 'spring', stiffness: 500, damping: 22 }}
-              className="relative font-['DSEG7'] leading-none text-amber-400"
-              style={{
-                fontSize: 'clamp(5.5rem,19vw,9.5rem)',
-                textShadow: isDisabled ? 'none' : SCORE_GLOW,
-              }}
-            >
-              {currentScore}
-            </motion.div>
-          </div>
+      {/* Score area */}
+      <div className="flex flex-1 flex-col items-center justify-center gap-5">
+        {/* Sets won pips */}
+        <div className="flex gap-2">
+          {Array.from({ length: config.setsToWin }).map((_, i) => {
+            const filled = i < sets.filter(s => s.winner === team).length
+            return (
+              <span
+                key={i}
+                className="h-3 w-3 rounded-full transition-all"
+                style={filled
+                  ? { background: teamColor, boxShadow: `0 0 5px ${teamColor}, 0 0 10px ${teamColor}88` }
+                  : { background: '#1e2030' }}
+              />
+            )
+          })}
         </div>
 
-        {team === 'B' && timeoutStrip}
+        {/* Score digit with ghost segments */}
+        <div className="relative px-2">
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-0 font-['DSEG7'] leading-none text-amber-400 opacity-[0.10]"
+            style={{ fontSize: 'clamp(5.5rem,19vw,9.5rem)' }}
+          >
+            {ghostDigits}
+          </div>
+          <motion.div
+            key={currentScore}
+            initial={{ opacity: 0.5, scale: 1.15 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ type: 'spring', stiffness: 500, damping: 22 }}
+            className="relative font-['DSEG7'] leading-none text-amber-400"
+            style={{
+              fontSize: 'clamp(5.5rem,19vw,9.5rem)',
+              textShadow: isDisabled ? 'none' : SCORE_GLOW,
+            }}
+          >
+            {currentScore}
+          </motion.div>
+        </div>
       </div>
+
+      {team === 'B' && timeoutStrip}
     </div>
   )
 }
