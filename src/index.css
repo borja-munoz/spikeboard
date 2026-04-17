@@ -1,5 +1,11 @@
 @import "tailwindcss";
 
+@layer base {
+  body {
+    font-family: 'Doto', monospace;
+  }
+}
+
 /* Doto — dot-matrix display font (SIL Open Font License) */
 @font-face {
   font-family: 'Doto';

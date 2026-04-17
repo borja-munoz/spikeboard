@@ -90,7 +90,7 @@ export function ConfigSheet({ isOpen, onClose }: Props) {
             animate={{ y: 0 }}
             exit={{ y: '100%' }}
             transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-            className="fixed inset-x-0 bottom-0 z-20 max-h-[90vh] overflow-y-auto rounded-t-2xl bg-slate-900"
+            className="fixed inset-x-0 bottom-0 z-20 max-h-[75vh] overflow-y-auto rounded-t-2xl bg-slate-900"
           >
             {/* Handle */}
             <div className="flex justify-center pb-1 pt-3">
