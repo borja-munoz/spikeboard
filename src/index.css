@@ -1,18 +1,42 @@
 @import "tailwindcss";
 
 @layer base {
+  /* Paint the whole viewport (including safe areas / under the system bars)
+     with the app background so no white strip shows in portrait. */
+  html,
+  body,
+  #root {
+    height: 100%;
+    background-color: #07080d;
+  }
+
+  html {
+    color-scheme: dark;
+  }
+
   body {
     font-family: 'Doto', monospace;
+    overscroll-behavior: none;
   }
 }
 
-/* Doto — dot-matrix display font (SIL Open Font License) */
+/* Doto — dot-matrix display font (SIL Open Font License).
+   Regular-weight text uses the Bold cut; anything semibold or heavier uses
+   the Black cut, whose larger dots stay legible at small sizes. */
 @font-face {
   font-family: 'Doto';
   font-style: normal;
-  font-weight: 700;
+  font-weight: 100 599;
   font-display: block;
   src: url('/spikeboard/fonts/Doto-Bold.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Doto';
+  font-style: normal;
+  font-weight: 600 900;
+  font-display: block;
+  src: url('/spikeboard/fonts/Doto-Black.woff2') format('woff2');
 }
 
 /* DSEG7 Modern — 7-segment LED display font (SIL Open Font License) */

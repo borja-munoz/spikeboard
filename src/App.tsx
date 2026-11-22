@@ -49,14 +49,15 @@ function App() {
   }
 
   return (
-    <div className="flex h-dvh flex-col bg-[#07080d] overflow-hidden">
+    <div className="flex h-dvh flex-col overflow-hidden bg-[#07080d] pb-[env(safe-area-inset-bottom)] pl-[env(safe-area-inset-left)] pr-[env(safe-area-inset-right)]">
       <MatchHeader
         onOpenConfig={() => setShowConfig(true)}
         onOpenHistory={() => setShowHistory(true)}
       />
-      <div className="flex flex-1 overflow-hidden">
+      {/* Side by side in landscape; stacked in portrait so each score gets the full width */}
+      <div className="flex min-h-0 flex-1 overflow-hidden portrait:flex-col">
         <ScorePanel team="A" />
-        <div className="w-px bg-slate-700" />
+        <div className="w-px shrink-0 bg-slate-600 portrait:h-px portrait:w-auto" />
         <ScorePanel team="B" />
       </div>
 

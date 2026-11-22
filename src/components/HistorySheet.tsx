@@ -61,37 +61,37 @@ function MatchEntry({ record, onDelete }: { record: MatchRecord; onDelete: () =>
       {/* Animated card — only handles the x transform */}
       <motion.div
         style={{ x }}
-        className="relative rounded-2xl border border-[#1a1d2e] bg-[#0c0d14] p-4"
+        className="relative rounded-2xl border border-[#262a3d] bg-[#0c0d14] p-4"
       >
         {/* Trash icon button */}
         <button
           onPointerDown={(e) => e.stopPropagation()}
           onClick={triggerDelete}
-          className="absolute right-3 top-3 rounded-lg p-1.5 text-slate-700 transition-colors active:text-red-400"
+          className="absolute right-3 top-3 rounded-lg p-1.5 text-slate-400 transition-colors active:text-red-400"
           aria-label="Delete"
         >
           <Trash2 size={14} />
         </button>
 
         {/* Date */}
-        <p className="mb-3 text-xs uppercase tracking-widest text-slate-600">{date}</p>
+        <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-slate-400">{date}</p>
 
         {/* Teams + sets-won summary */}
         <div className="mb-3 flex items-center justify-between pr-6">
           <span
             className="font-['Doto'] text-base font-bold uppercase tracking-wider"
-            style={{ color: record.winner === 'A' ? colorA : '#64748b' }}
+            style={{ color: record.winner === 'A' ? colorA : '#94a3b8' }}
           >
             {nameA}
           </span>
           <div className="flex items-center gap-2 font-['DSEG7'] text-xl">
             <span style={{ color: colorA }}>{record.setsWon.A}</span>
-            <span className="text-slate-700">–</span>
+            <span className="text-slate-500">–</span>
             <span style={{ color: colorB }}>{record.setsWon.B}</span>
           </div>
           <span
             className="font-['Doto'] text-base font-bold uppercase tracking-wider"
-            style={{ color: record.winner === 'B' ? colorB : '#64748b' }}
+            style={{ color: record.winner === 'B' ? colorB : '#94a3b8' }}
           >
             {nameB}
           </span>
@@ -107,11 +107,11 @@ function MatchEntry({ record, onDelete }: { record: MatchRecord; onDelete: () =>
                 background: '#07080d',
                 color: s.winner === record.winner
                   ? record.teamColors[record.winner === 'A' ? 0 : 1]
-                  : '#374151',
+                  : '#94a3b8',
               }}
             >
               <span>{s.A}</span>
-              <span className="text-slate-800">–</span>
+              <span className="text-slate-500">–</span>
               <span>{s.B}</span>
             </div>
           ))}
@@ -170,7 +170,7 @@ export function HistorySheet({ isOpen, onClose }: Props) {
             {/* List */}
             <div className="flex-1 overflow-y-auto px-6 py-4">
               {records.length === 0 ? (
-                <p className="py-12 text-center text-sm text-slate-600">{t('history.empty')}</p>
+                <p className="py-12 text-center text-sm text-slate-400">{t('history.empty')}</p>
               ) : (
                 <AnimatePresence mode="popLayout">
                   {records.map((record) => (
@@ -193,14 +193,14 @@ export function HistorySheet({ isOpen, onClose }: Props) {
 
             {/* Footer — clear all */}
             {records.length > 0 && (
-              <div className="border-t border-slate-800 px-6 py-4 pb-8">
+              <div className="border-t border-slate-800 px-6 py-4 pb-[calc(2rem+env(safe-area-inset-bottom))]">
                 {confirmClear ? (
                   <div className="flex items-center justify-between gap-3">
-                    <span className="text-sm text-slate-400">{t('history.confirmClear')}</span>
+                    <span className="text-sm text-slate-300">{t('history.confirmClear')}</span>
                     <div className="flex gap-2">
                       <button
                         onClick={() => setConfirmClear(false)}
-                        className="rounded-lg px-4 py-2 text-sm text-slate-500 active:text-slate-300"
+                        className="rounded-lg px-4 py-2 text-sm text-slate-300 active:text-white"
                       >
                         {t('dialog.cancel')}
                       </button>
@@ -215,7 +215,7 @@ export function HistorySheet({ isOpen, onClose }: Props) {
                 ) : (
                   <button
                     onClick={handleClear}
-                    className="flex w-full items-center justify-center gap-2 py-2 text-sm text-slate-600 active:text-slate-400"
+                    className="flex w-full items-center justify-center gap-2 py-2 text-sm text-slate-400 active:text-slate-200"
                   >
                     <Trash2 size={14} />
                     {t('history.clearAll')}

@@ -64,19 +64,19 @@ export function MatchWinOverlay({ onNewMatch }: Props) {
         <motion.div variants={item} className="flex gap-4">
           {completedSets.map((s, i) => (
             <div key={i} className="flex flex-col items-center gap-1">
-              <span className="text-xs uppercase tracking-widest text-slate-600">
+              <span className="text-xs font-semibold uppercase tracking-widest text-slate-400">
                 {t('scoreboard.set')} {i + 1}
               </span>
               <div
                 className="flex items-center gap-1.5 rounded-lg px-3 py-1.5 font-['DSEG7'] text-lg"
                 style={{
                   background: s.winner === matchWinner ? teamColor + '22' : '#0c0d14',
-                  color: s.winner === matchWinner ? teamColor : '#4a5568',
+                  color: s.winner === matchWinner ? teamColor : '#94a3b8',
                   outline: s.winner === matchWinner ? `1px solid ${teamColor}44` : 'none',
                 }}
               >
                 <span>{s.A}</span>
-                <span className="text-slate-700">–</span>
+                <span className="text-slate-500">–</span>
                 <span>{s.B}</span>
               </div>
             </div>
@@ -93,7 +93,7 @@ export function MatchWinOverlay({ onNewMatch }: Props) {
           </button>
           <button
             onClick={onNewMatch}
-            className="w-full rounded-2xl py-3 text-sm font-semibold uppercase tracking-widest text-slate-500 active:text-slate-300"
+            className="w-full rounded-2xl py-3 text-sm font-semibold uppercase tracking-widest text-slate-300 active:text-white"
           >
             {t('overlay.newMatch')}
           </button>

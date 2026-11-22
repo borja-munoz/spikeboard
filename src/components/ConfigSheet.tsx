@@ -289,7 +289,7 @@ export function ConfigSheet({ isOpen, onClose }: Props) {
             </div>
 
             {/* Footer */}
-            <div className="space-y-3 border-t border-slate-800 px-6 py-4 pb-8">
+            <div className="space-y-3 border-t border-slate-800 px-6 py-4 pb-[calc(2rem+env(safe-area-inset-bottom))]">
               <button
                 onClick={handleNewMatch}
                 className="w-full rounded-2xl bg-green-600 py-4 text-lg font-bold text-white active:scale-95 transition-transform"

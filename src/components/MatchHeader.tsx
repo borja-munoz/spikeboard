@@ -5,6 +5,7 @@ import { useMatchStore } from '../store/matchStore'
 import { useSettingsStore } from '../store/settingsStore'
 import { LongPressButton } from './LongPressButton'
 import { ResetDialog } from './ResetDialog'
+import { tint } from '../utils/color'
 
 interface Props {
   onOpenConfig: () => void
@@ -60,9 +61,9 @@ export function MatchHeader({ onOpenConfig, onOpenHistory }: Props) {
 
   return (
     <>
-      <div className="flex items-center gap-2 bg-[#030305] px-3 py-4 border-b border-[#1a1d2e]">
+      <div className="flex items-center gap-2 border-b border-[#262a3d] bg-[#030305] px-3 pb-4 pt-[calc(1rem+env(safe-area-inset-top))] portrait:flex-col-reverse portrait:items-stretch portrait:gap-1 portrait:pb-3 portrait:pt-[calc(0.25rem+env(safe-area-inset-top))]">
         {/* Centre — team names + win set buttons + set scores */}
-        <div className="flex flex-1 flex-col gap-2.5">
+        <div className="flex min-w-0 flex-1 flex-col gap-2.5">
           {([
             { color: colorA, name: config.teamNames[0], scoreKey: 'scoreA' as const, teamId: 'A' as const },
             { color: colorB, name: config.teamNames[1], scoreKey: 'scoreB' as const, teamId: 'B' as const },
@@ -80,14 +81,14 @@ export function MatchHeader({ onOpenConfig, onOpenHistory }: Props) {
                     if (e.key === 'Enter') commitEdit()
                     if (e.key === 'Escape') cancelEdit()
                   }}
-                  className="w-40 bg-transparent text-sm font-bold uppercase tracking-[0.12em] outline-none border-b"
-                  style={{ color, borderColor: color + '88' }}
+                  className="min-w-0 flex-1 bg-transparent text-base font-bold uppercase tracking-[0.12em] outline-none border-b landscape:w-40 landscape:flex-none"
+                  style={{ color: tint(color), borderColor: color + '88' }}
                 />
               ) : (
                 <button
                   onClick={() => startEdit(teamId, name)}
-                  className="w-40 text-left text-sm font-bold uppercase tracking-[0.12em] truncate transition-opacity active:opacity-60"
-                  style={{ color }}
+                  className="min-w-0 flex-1 text-left text-base font-bold uppercase tracking-[0.12em] truncate transition-opacity active:opacity-60 landscape:w-40 landscape:flex-none"
+                  style={{ color: tint(color) }}
                 >
                   {name}
                 </button>
@@ -96,13 +97,13 @@ export function MatchHeader({ onOpenConfig, onOpenHistory }: Props) {
               <LongPressButton
                 onComplete={() => assignSet(teamId)}
                 disabled={!!matchWinner}
-                className="rounded-lg px-3 py-2 text-sm font-bold uppercase tracking-wider disabled:opacity-30"
-                style={{ background: color + '22', color, border: `1px solid ${color}55` }}
+                className="shrink-0 whitespace-nowrap rounded-lg px-3 py-2 text-sm font-bold uppercase tracking-wider disabled:opacity-40 portrait:px-2"
+                style={{ background: color + '22', color: tint(color), border: `1px solid ${color}aa` }}
               >
                 {t('scoreboard.winSet')}
               </LongPressButton>
               {/* Per-set scores */}
-              <div className="flex gap-1">
+              <div className="flex shrink-0 gap-1">
                 {setColumns.map((col, i) => {
                   const score = col[scoreKey]
                   const won = col.winner === teamId
@@ -110,11 +111,11 @@ export function MatchHeader({ onOpenConfig, onOpenHistory }: Props) {
                   return (
                     <span
                       key={i}
-                      className="min-w-[2.5rem] rounded-md px-1.5 py-0.5 text-center text-base font-bold tabular-nums"
+                      className="min-w-[2.5rem] rounded-md px-1.5 py-0.5 text-center text-base font-bold tabular-nums portrait:min-w-[2rem] portrait:px-1"
                       style={{
-                        color: won ? color : col.isCurrent ? '#e2e8f0' : lost ? '#374151' : '#1e2030',
-                        background: won ? color + '22' : col.isCurrent ? '#ffffff0d' : 'transparent',
-                        outline: col.isCurrent ? '1px solid #ffffff18' : 'none',
+                        color: won ? tint(color) : col.isCurrent ? '#f8fafc' : lost ? '#94a3b8' : '#475569',
+                        background: won ? color + '2e' : col.isCurrent ? '#ffffff14' : 'transparent',
+                        outline: col.isCurrent ? '1px solid #ffffff33' : 'none',
                       }}
                     >
                       {score ?? '–'}
@@ -127,31 +128,31 @@ export function MatchHeader({ onOpenConfig, onOpenHistory }: Props) {
         </div>
 
         {/* Right — icon buttons */}
-        <div className="flex shrink-0 items-center">
+        <div className="flex shrink-0 items-center portrait:justify-end">
           <button
             onClick={() => setSoundEnabled(!soundEnabled)}
-            className="rounded-lg p-2 text-slate-600 transition-colors active:bg-[#0d0e14] active:text-slate-400"
+            className="rounded-lg p-2 text-slate-300 transition-colors active:bg-[#1a1d2e] active:text-white"
             aria-label={soundEnabled ? t('config.soundOff') : t('config.soundOn')}
           >
             {soundEnabled ? <Volume2 size={25} /> : <VolumeX size={25} />}
           </button>
           <button
             onClick={onOpenConfig}
-            className="rounded-lg p-2 text-slate-600 transition-colors active:bg-[#0d0e14] active:text-slate-400"
+            className="rounded-lg p-2 text-slate-300 transition-colors active:bg-[#1a1d2e] active:text-white"
             aria-label={t('config.title')}
           >
             <SlidersHorizontal size={25} />
           </button>
           <button
             onClick={onOpenHistory}
-            className="rounded-lg p-2 text-slate-600 transition-colors active:bg-[#0d0e14] active:text-slate-400"
+            className="rounded-lg p-2 text-slate-300 transition-colors active:bg-[#1a1d2e] active:text-white"
             aria-label={t('history.title')}
           >
             <BookOpen size={25} />
           </button>
           <button
             onClick={() => setShowDialog(true)}
-            className="rounded-lg p-2 text-slate-600 transition-colors active:bg-[#0d0e14] active:text-slate-400"
+            className="rounded-lg p-2 text-slate-300 transition-colors active:bg-[#1a1d2e] active:text-white"
             aria-label={t('dialog.resetTitle')}
           >
             <RotateCcw size={25} />

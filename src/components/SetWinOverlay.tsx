@@ -51,12 +51,12 @@ export function SetWinOverlay() {
             {/* Set score */}
             <div className="flex items-center gap-3 font-['DSEG7'] text-3xl text-amber-400">
               <span>{sets[lastCompletedSet.index]?.A ?? 0}</span>
-              <span className="text-slate-600">–</span>
+              <span className="text-slate-400">–</span>
               <span>{sets[lastCompletedSet.index]?.B ?? 0}</span>
             </div>
 
             {/* Tap hint */}
-            <span className="mt-1 text-xs uppercase tracking-widest text-slate-600">
+            <span className="mt-1 text-xs font-semibold uppercase tracking-widest text-slate-400">
               {t('overlay.tapToContinue')}
             </span>
           </motion.div>
