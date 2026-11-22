@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { History, RotateCcw, Settings, Volume2, VolumeX } from 'lucide-react'
 import { useMatchStore } from '../store/matchStore'
@@ -22,6 +22,20 @@ export function MatchHeader({ onOpenConfig, onOpenHistory }: Props) {
   const [editingTeam, setEditingTeam] = useState<'A' | 'B' | null>(null)
   const [editValue, setEditValue] = useState('')
   const inputRef = useRef<HTMLInputElement>(null)
+
+  // The header is position:fixed (see below), so an in-flow spacer reserves its
+  // height. Track it, since it changes with orientation, set count and safe areas.
+  const headerRef = useRef<HTMLElement>(null)
+  const [headerHeight, setHeaderHeight] = useState(0)
+  useLayoutEffect(() => {
+    const el = headerRef.current
+    if (!el) return
+    const update = () => setHeaderHeight(el.getBoundingClientRect().height)
+    update()
+    const ro = new ResizeObserver(update)
+    ro.observe(el)
+    return () => ro.disconnect()
+  }, [])
 
   useEffect(() => {
     if (editingTeam !== null) {
@@ -62,7 +76,13 @@ export function MatchHeader({ onOpenConfig, onOpenHistory }: Props) {
 
   return (
     <>
-      <header className="border-b border-[#262a3d] bg-[#030305] pt-[env(safe-area-inset-top)]">
+      {/* Fixed, solid, full-width header at the top edge: iOS 26+/27 ignores theme-color
+          and otherwise blurs the area under and below the status bar. A fixed element
+          touching the top makes Safari paint the status bar with its colour instead. */}
+      <header
+        ref={headerRef}
+        className="fixed inset-x-0 top-0 z-10 border-b border-[#262a3d] bg-[#030305] pl-[env(safe-area-inset-left)] pr-[env(safe-area-inset-right)] pt-[env(safe-area-inset-top)]"
+      >
         {/* Top app bar — app title on the left, actions on the right (settings last) */}
         <div className="flex h-11 items-center justify-between gap-2 pl-4 pr-1.5">
           <div className="flex min-w-0 items-baseline gap-3">
@@ -165,6 +185,7 @@ export function MatchHeader({ onOpenConfig, onOpenHistory }: Props) {
           ))}
         </div>
       </header>
+      <div aria-hidden className="shrink-0" style={{ height: headerHeight }} />
 
       <ResetDialog
         isOpen={showDialog}

@@ -50,14 +50,6 @@ function App() {
 
   return (
     <div className="flex h-dvh flex-col overflow-hidden bg-[#07080d] pb-[env(safe-area-inset-bottom)] pl-[env(safe-area-inset-left)] pr-[env(safe-area-inset-right)]">
-      {/* iOS 26+/27 ignores theme-color and blurs content under the status bar (much
-          further down in installed PWAs). A solid, full-width position:fixed element
-          at the top edge (≥6px tall) makes Safari paint the status bar with its colour
-          instead of blurring. Same colour as the header, so it is invisible elsewhere. */}
-      <div
-        aria-hidden
-        className="pointer-events-none fixed inset-x-0 top-0 h-[max(env(safe-area-inset-top),6px)] bg-[#030305]"
-      />
       <MatchHeader
         onOpenConfig={() => setShowConfig(true)}
         onOpenHistory={() => setShowHistory(true)}
