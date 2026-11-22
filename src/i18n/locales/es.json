@@ -61,5 +61,8 @@
     "empty": "Aún no hay partidos registrados",
     "clearAll": "Borrar Historial",
     "confirmClear": "¿Eliminar todo el historial?"
+  },
+  "menu": {
+    "more": "Más opciones"
   }
 }

@@ -1,10 +1,11 @@
 import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { BookOpen, RotateCcw, SlidersHorizontal, Volume2, VolumeX } from 'lucide-react'
+import { History, RotateCcw, Settings, Volume2, VolumeX } from 'lucide-react'
 import { useMatchStore } from '../store/matchStore'
 import { useSettingsStore } from '../store/settingsStore'
 import { LongPressButton } from './LongPressButton'
 import { ResetDialog } from './ResetDialog'
+import { OverflowMenu } from './OverflowMenu'
 import { tint } from '../utils/color'
 
 interface Props {
@@ -61,9 +62,46 @@ export function MatchHeader({ onOpenConfig, onOpenHistory }: Props) {
 
   return (
     <>
-      <div className="flex items-center gap-2 border-b border-[#262a3d] bg-[#030305] px-3 pb-4 pt-[calc(1rem+env(safe-area-inset-top))] portrait:flex-col-reverse portrait:items-stretch portrait:gap-1 portrait:pb-3 portrait:pt-[calc(0.25rem+env(safe-area-inset-top))]">
-        {/* Centre — team names + win set buttons + set scores */}
-        <div className="flex min-w-0 flex-1 flex-col gap-2.5">
+      <header className="border-b border-[#262a3d] bg-[#030305] pt-[env(safe-area-inset-top)]">
+        {/* Top app bar — app title on the left, actions on the right (settings last) */}
+        <div className="flex h-11 items-center justify-between gap-2 pl-4 pr-1.5">
+          <div className="flex min-w-0 items-baseline gap-3">
+            <span className="truncate text-sm font-bold uppercase tracking-[0.2em] text-slate-200">
+              Spikeboard
+            </span>
+            {!matchWinner && (
+              <span className="shrink-0 text-xs font-semibold uppercase tracking-[0.15em] text-slate-400">
+                {t('scoreboard.set')} {currentSetIndex + 1}
+              </span>
+            )}
+          </div>
+          <nav className="flex shrink-0 items-center">
+            <button
+              onClick={() => setSoundEnabled(!soundEnabled)}
+              className="rounded-lg p-2 text-slate-300 transition-colors hover:text-white active:bg-[#1a1d2e] active:text-white"
+              aria-label={soundEnabled ? t('config.soundOff') : t('config.soundOn')}
+              aria-pressed={!soundEnabled}
+              title={soundEnabled ? t('config.soundOff') : t('config.soundOn')}
+            >
+              {soundEnabled ? <Volume2 size={22} /> : <VolumeX size={22} />}
+            </button>
+            <OverflowMenu
+              items={[
+                { label: t('history.title'), icon: <History size={18} />, onSelect: onOpenHistory },
+                { label: t('config.title'), icon: <Settings size={18} />, onSelect: onOpenConfig },
+                {
+                  label: t('dialog.resetTitle'),
+                  icon: <RotateCcw size={18} />,
+                  onSelect: () => setShowDialog(true),
+                  destructive: true,
+                },
+              ]}
+            />
+          </nav>
+        </div>
+
+        {/* Team rows — name, win set button, per-set scores */}
+        <div className="flex flex-col gap-2.5 px-3 pb-3 pt-1">
           {([
             { color: colorA, name: config.teamNames[0], scoreKey: 'scoreA' as const, teamId: 'A' as const },
             { color: colorB, name: config.teamNames[1], scoreKey: 'scoreB' as const, teamId: 'B' as const },
@@ -126,39 +164,7 @@ export function MatchHeader({ onOpenConfig, onOpenHistory }: Props) {
             </div>
           ))}
         </div>
-
-        {/* Right — icon buttons */}
-        <div className="flex shrink-0 items-center portrait:justify-end">
-          <button
-            onClick={() => setSoundEnabled(!soundEnabled)}
-            className="rounded-lg p-2 text-slate-300 max-[800px]:p-1.5 transition-colors active:bg-[#1a1d2e] active:text-white"
-            aria-label={soundEnabled ? t('config.soundOff') : t('config.soundOn')}
-          >
-            {soundEnabled ? <Volume2 size={25} /> : <VolumeX size={25} />}
-          </button>
-          <button
-            onClick={onOpenConfig}
-            className="rounded-lg p-2 text-slate-300 max-[800px]:p-1.5 transition-colors active:bg-[#1a1d2e] active:text-white"
-            aria-label={t('config.title')}
-          >
-            <SlidersHorizontal size={25} />
-          </button>
-          <button
-            onClick={onOpenHistory}
-            className="rounded-lg p-2 text-slate-300 max-[800px]:p-1.5 transition-colors active:bg-[#1a1d2e] active:text-white"
-            aria-label={t('history.title')}
-          >
-            <BookOpen size={25} />
-          </button>
-          <button
-            onClick={() => setShowDialog(true)}
-            className="rounded-lg p-2 text-slate-300 max-[800px]:p-1.5 transition-colors active:bg-[#1a1d2e] active:text-white"
-            aria-label={t('dialog.resetTitle')}
-          >
-            <RotateCcw size={25} />
-          </button>
-        </div>
-      </div>
+      </header>
 
       <ResetDialog
         isOpen={showDialog}

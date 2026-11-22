@@ -62,5 +62,8 @@
     "empty": "No matches recorded yet",
     "clearAll": "Clear History",
     "confirmClear": "Delete all match history?"
+  },
+  "menu": {
+    "more": "More options"
   }
 }
